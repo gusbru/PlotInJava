@@ -34,6 +34,9 @@ public class Controller implements Initializable
     @FXML
     private TableColumn columnNumberOfSteps, columnIntegralValue;
 
+    @FXML
+    private ProgressIndicator progressIndicatorMC;
+
 
     private ScatterChart scatterVelocityDistribution, scatterMC, scatterVelocityTerm;
 
@@ -119,11 +122,16 @@ public class Controller implements Initializable
         columnIntegralValue.setCellValueFactory(new PropertyValueFactory<>("value"));
         tableResultMC.setItems(integralValues);
 
+//        progressIndicatorMC.setVisible(false);
+
     }
 
     private void generateMC()
     {
         getValues();
+
+        progressIndicatorMC.setVisible(true);
+        progressIndicatorMC.setProgress(-1.0);
 
         dataMC = maxwellBoltzmann.getMCValue(mass, temperature, vMin, vMax, numberOfPoints);
         dataMC.setName("T = " + temperature + "\nN = " + numberOfPoints);
@@ -132,6 +140,9 @@ public class Controller implements Initializable
         double integralValue = maxwellBoltzmann.getMCIntegralValue();
         integralValues.add(new IntegralValue(numberOfPoints, integralValue));
         tableResultMC.setItems(integralValues);
+
+        progressIndicatorMC.setProgress(1.0);
+//        progressIndicatorMC.setVisible(false);
 
     }
 
